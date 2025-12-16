@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
-        <nav style={{
+        <nav className="public-navbar" style={{
             backgroundColor: 'var(--bg-secondary)',
             borderBottom: '1px solid var(--border-color)',
-            padding: '1rem 0',
-            position: 'sticky',
-            top: 0,
+            padding: '1rem 0', // Restored for Desktop (Mobile overrides this via CSS)
+            position: 'relative',
             zIndex: 100
         }}>
             <div className="container-wide" style={{
                 display: 'flex',
-                justifyContent: 'flex-start', // Left aligned
-                alignItems: 'center'
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                height: '100%' // Ensure full height
             }}>
-                <Link to="/" style={{
+                <Link to="/" className="public-navbar-title" style={{
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
                     letterSpacing: '1px',

@@ -1,9 +1,26 @@
 import React from 'react';
 
 const ProductCard = ({ product }) => {
+    // Mobile Detection
+    const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const truncateDesc = (text) => {
         if (text.length <= 20) return text;
         return text.substring(0, 20) + '...';
+    };
+
+    const truncateTitle = (text) => {
+        // Mobile only: Max 16 chars
+        if (isMobile && text.length > 16) {
+            return text.substring(0, 16) + '...';
+        }
+        return text;
     };
 
     return (
@@ -34,7 +51,7 @@ const ProductCard = ({ product }) => {
                     marginBottom: '0.5rem',
                     color: 'var(--text-primary)'
                 }}>
-                    {product.name}
+                    {truncateTitle(product.name)}
                 </h3>
                 <p style={{
                     color: 'var(--text-secondary)',
