@@ -10,7 +10,8 @@ import HomeSkeleton from '../../components/skeletons/HomeSkeleton';
 
 const Home = () => {
     // Product State
-    const [products, setProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]); // Master List
+    const [filteredProducts, setFilteredProducts] = useState([]); // Display List
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,19 +38,21 @@ const Home = () => {
     const currentTranslateX = useRef(0);
     const draggingRef = useRef(false);
 
-    // Initial Data Fetch
+    // Initial Data Fetch (ONCE)
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
                 // Parallel Fetch
                 const [prodRes, sliderRes] = await Promise.allSettled([
-                    productService.getAll({ searchQuery, status: 'visible', searchFields: ['name'] }),
+                    productService.getAll({ status: 'visible' }), // Fetch ALL visible products initially
                     sliderService.getAll()
                 ]);
 
                 if (prodRes.status === 'fulfilled') {
-                    setProducts(prodRes.value || []);
+                    const products = prodRes.value || [];
+                    setAllProducts(products);
+                    setFilteredProducts(products); // Default: Show all
                 }
 
                 if (sliderRes.status === 'fulfilled') {
@@ -66,7 +69,20 @@ const Home = () => {
             }
         };
         fetchData();
-    }, [searchQuery]);
+    }, []); // Empty dependency: Fetch only once on mount
+
+    // Real-time Filtering Logic
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setFilteredProducts(allProducts);
+        } else {
+            const lowerQuery = searchQuery.toLowerCase();
+            const filtered = allProducts.filter(p =>
+                p.name.toLowerCase().includes(lowerQuery)
+            );
+            setFilteredProducts(filtered);
+        }
+    }, [searchQuery, allProducts]);
 
     // Responsive Check
     useEffect(() => {
@@ -377,8 +393,8 @@ const Home = () => {
                         />
                     </div>
                     <div className="product-grid">
-                        {products.length > 0 ? (
-                            products.map(p => (
+                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map(p => (
                                 <Link to={`/product/${p.id}`} key={p.id} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                                     <ProductCard product={p} />
                                 </Link>

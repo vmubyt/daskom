@@ -1,10 +1,11 @@
 import React from 'react';
 import Skeleton from '../common/Skeleton';
+import Navbar from '../layout/Navbar';
 
 const ProductDetailSkeleton = () => {
     return (
         <div style={{ backgroundColor: '#121212', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-            {/* Real Navbar usually stays, but we can structure the main content */}
+            <Navbar />
 
             <main style={{ flex: 1, padding: '3rem 0' }}>
                 <div className="container" style={{ position: 'relative' }}>

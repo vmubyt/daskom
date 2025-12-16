@@ -40,6 +40,22 @@ const ProductList = () => {
     const [uploadMode, setUploadMode] = useState('file');
     const [manualUrl, setManualUrl] = useState('');
 
+    // Responsive State
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
+
+    useEffect(() => {
+        const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Helper: Truncate Product Name
+    const getTruncatedName = (name) => {
+        const limit = isDesktop ? 96 : 18;
+        if (name.length <= limit) return name;
+        return name.substring(0, limit - 3) + '...';
+    };
+
     const fetchProducts = async () => {
         setIsLoading(true);
         try {
@@ -325,43 +341,47 @@ const ProductList = () => {
                         ))}
                     </div>
                 ) : (
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Base Price</th>
-                                <th>Stock</th>
-                                <th>Status</th>
-                                <th style={{ textAlign: 'right' }}>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map(p => (
-                                <tr key={p.id}>
-                                    <td>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                            <img src={p.imageUrl || (p.images && p.images[0])} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
-                                            <div>
-                                                <div style={{ fontWeight: '500' }}>{p.name}</div>
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                                                    {p.variants?.combinations?.length || 0} Variants
+                    <div className="admin-table-scroll">
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th style={{ textAlign: 'center' }}>Base Price</th>
+                                    <th style={{ textAlign: 'center' }}>Stock</th>
+                                    <th style={{ textAlign: 'center' }}>Status</th>
+                                    <th style={{ textAlign: 'center' }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.map(p => (
+                                    <tr key={p.id}>
+                                        <td>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                <img src={p.imageUrl || (p.images && p.images[0])} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                                                <div>
+                                                    <div style={{ fontWeight: '500' }} title={p.name}>
+                                                        {getTruncatedName(p.name)}
+                                                    </div>
+                                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                                                        {p.variants?.combinations?.length || 0} Variants
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>Rp {Number(p.price).toLocaleString()}</td>
-                                    <td>{p.quantity}</td>
-                                    <td>{p.status}</td>
-                                    <td style={{ textAlign: 'right' }}>
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
-                                            <button onClick={() => handleOpenEdit(p)} className="admin-btn-secondary" style={{ border: 'none', padding: '8px' }}><Edit2 size={16} /></button>
-                                            <button onClick={() => handleDeleteClick(p)} className="admin-btn-secondary" style={{ border: 'none', padding: '8px' }}><Trash2 size={16} color="red" /></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td style={{ textAlign: 'center' }}>Rp {Number(p.price).toLocaleString()}</td>
+                                        <td style={{ textAlign: 'center' }}>{p.quantity}</td>
+                                        <td style={{ textAlign: 'center' }}>{p.status}</td>
+                                        <td style={{ textAlign: 'center' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                                                <button onClick={() => handleOpenEdit(p)} className="admin-btn-secondary" style={{ border: 'none', padding: '8px' }}><Edit2 size={16} /></button>
+                                                <button onClick={() => handleDeleteClick(p)} className="admin-btn-secondary" style={{ border: 'none', padding: '8px' }}><Trash2 size={16} color="red" /></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
 

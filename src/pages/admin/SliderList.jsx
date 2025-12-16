@@ -187,12 +187,12 @@ const SliderList = () => {
                     <table className="admin-table">
                         <thead>
                             <tr>
-                                <th style={{ width: '50px' }}></th>
-                                <th>Preview</th>
-                                <th>Slider Title</th>
-                                <th>Position</th>
-                                <th>Created At</th>
-                                <th style={{ textAlign: 'right' }}>Actions</th>
+                                <th style={{ width: '50px', textAlign: 'center' }}></th>
+                                <th style={{ textAlign: 'left' }}>Preview</th>
+                                <th style={{ textAlign: 'center' }}>Slider Title</th>
+                                <th style={{ textAlign: 'center' }}>Position</th>
+                                <th style={{ textAlign: 'center' }}>Created At</th>
+                                <th style={{ textAlign: 'center' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -210,10 +210,10 @@ const SliderList = () => {
                                         onDrop={(e) => handleDrop(e, index)}
                                         style={{ cursor: 'move' }}
                                     >
-                                        <td style={{ color: 'var(--text-secondary)' }}>
+                                        <td style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
                                             <GripVertical size={20} />
                                         </td>
-                                        <td>
+                                        <td style={{ textAlign: 'left' }}>
                                             <div style={{ width: '120px', aspectRatio: '16/9', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#000' }}>
                                                 <img
                                                     src={slider.imageUrl}
@@ -223,10 +223,10 @@ const SliderList = () => {
                                                 />
                                             </div>
                                         </td>
-                                        <td style={{ fontWeight: '500' }}>
+                                        <td style={{ textAlign: 'center', fontWeight: '500' }}>
                                             {slider.title || <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>No Title</span>}
                                         </td>
-                                        <td>
+                                        <td style={{ textAlign: 'center' }}>
                                             <span style={{
                                                 backgroundColor: 'rgba(187, 134, 252, 0.1)',
                                                 color: 'var(--accent-color)',
@@ -238,11 +238,11 @@ const SliderList = () => {
                                                 {index + 1}
                                             </span>
                                         </td>
-                                        <td style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                        <td style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                                             {new Date(slider.createdAt).toLocaleDateString()}
                                         </td>
-                                        <td style={{ textAlign: 'right' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                                        <td style={{ textAlign: 'center' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
                                                 <button onClick={() => handleOpenEdit(slider)} className="admin-btn-secondary" style={{ border: 'none', padding: '8px' }}>
                                                     <Edit2 size={18} color="var(--accent-color)" />
                                                 </button>

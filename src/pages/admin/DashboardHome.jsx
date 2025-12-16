@@ -24,55 +24,46 @@ const DashboardHome = () => {
     }, []);
 
     const StatCard = ({ title, count, icon, color }) => (
-        <div style={{
-            backgroundColor: 'var(--bg-card)',
-            padding: '1.5rem',
-            borderRadius: '12px',
-            border: '1px solid var(--border-color)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem'
-        }}>
-            <div style={{
-                backgroundColor: `${color}20`,
-                padding: '1rem',
-                borderRadius: '50%',
-                color: color
-            }}>
+        <div className="stat-card">
+            <div
+                className="stat-icon-wrapper"
+                style={{
+                    backgroundColor: `${color}20`,
+                    color: color
+                }}
+            >
                 {icon}
             </div>
-            <div>
-                <h3 style={{ fontSize: '2rem', lineHeight: '1', marginBottom: '0.2rem' }}>{count}</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>{title}</p>
+            <div className="stat-content">
+                <span className="stat-value">{count}</span>
+                <span className="stat-label">{title}</span>
             </div>
         </div>
     );
 
     return (
         <div>
-            <h1 style={{ marginBottom: '2rem', color: 'var(--text-primary)' }}>Dashboard Overview</h1>
+            <div className="admin-page-header">
+                <h1>Dashboard Overview</h1>
+            </div>
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                gap: '1.5rem'
-            }}>
+            <div className="dashboard-grid">
                 <StatCard
                     title="Total Products"
                     count={stats.total}
-                    icon={<Package size={24} />}
+                    icon={<Package size={28} />}
                     color="#bb86fc"
                 />
                 <StatCard
                     title="Visible Products"
                     count={stats.visible}
-                    icon={<Eye size={24} />}
+                    icon={<Eye size={28} />}
                     color="#03dac6"
                 />
                 <StatCard
                     title="Private Products"
                     count={stats.private}
-                    icon={<EyeOff size={24} />}
+                    icon={<EyeOff size={28} />}
                     color="#cf6679"
                 />
             </div>
