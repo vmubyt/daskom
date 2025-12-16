@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../services/auth';
+import { useAuth } from '../../contexts/AuthContext';
 import { Lock, Mail } from 'lucide-react';
 
 const Login = () => {
@@ -9,6 +9,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,7 +17,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            await authService.login(email, password);
+            await login(email, password);
             navigate('/admin');
         } catch (err) {
             setError('Invalid email or password');

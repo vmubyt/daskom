@@ -1,98 +1,119 @@
-import { storage } from './storage';
-
-// Initial demo data
-const DEMO_PRODUCTS = [
-    {
-        id: "p-1",
-        name: "Classic Mechanical Keyboard",
-        description: "High quality mechanical keyboard with tactile switches for the best typing experience.",
-        imageUrl: "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=800&q=80",
-        createdAt: new Date().toISOString(),
-        status: "visible"
-    },
-    {
-        id: "p-2",
-        name: "Wireless Gaming Mouse",
-        description: "Ultra-low latency wireless mouse with 20000 DPI sensor.",
-        imageUrl: "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=800&q=80",
-        createdAt: new Date(Date.now() - 86400000).toISOString(),
-        status: "visible"
-    },
-    {
-        id: "p-3",
-        name: "Noise Cancelling Headphones",
-        description: "Premium sound quality with active noise cancellation technology.",
-        imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
-        createdAt: new Date(Date.now() - 172800000).toISOString(),
-        status: "private" // Hidden by default used for verification
-    },
-    {
-        id: "p-4",
-        name: "4K Monitor 27-inch",
-        description: "Crystal clear display for creative professionals.",
-        imageUrl: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
-        createdAt: new Date(Date.now() - 200000000).toISOString(),
-        status: "visible"
-    }
-];
-
-// Initialize memory
-let products = storage.getProducts() || DEMO_PRODUCTS;
-// Save immediately if empty (first run)
-if (!storage.getProducts()) {
-    storage.saveProducts(products);
-}
+import { supabase } from '../lib/supabaseClient';
 
 export const productService = {
-    getAll: (filterOptions = {}) => {
+    getAll: async (filterOptions = {}) => {
         const { searchQuery, status } = filterOptions;
 
-        let filtered = [...products];
+        let query = supabase
+            .from('products')
+            .select('*')
+            .order('created_at', { ascending: false });
 
-        // Filter by status
         if (status && status !== 'all') {
-            filtered = filtered.filter(p => p.status === status);
+            query = query.eq('status', status);
         }
 
-        // Filter by search query
         if (searchQuery) {
-            const q = searchQuery.toLowerCase();
-            const fields = filterOptions.searchFields || ['name', 'description'];
-
-            filtered = filtered.filter(p =>
-                fields.some(field => p[field] && p[field].toLowerCase().includes(q))
-            );
+            query = query.ilike('name', `%${searchQuery}%`);
         }
 
-        // Sort by newest first
-        return filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const { data, error } = await query;
+        if (error) throw error;
+
+        return data.map(p => ({
+            ...p,
+            imageUrl: p.image_url, // Keep for legacy/fallback
+            images: p.images || [], // New multi-image support
+            price: p.price || 0,
+            quantity: p.quantity || 0,
+            variants: p.variants || [],
+            createdAt: p.created_at
+        }));
     },
 
-    getById: (id) => {
-        return products.find(p => p.id === id);
-    },
+    getById: async (id) => {
+        const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', id)
+            .single();
 
-    create: (productData) => {
-        const newProduct = {
-            ...productData,
-            id: "p-" + Date.now(),
-            createdAt: new Date().toISOString()
+        if (error) throw error;
+
+        return {
+            ...data,
+            imageUrl: data.image_url,
+            images: data.images || [],
+            price: data.price || 0,
+            quantity: data.quantity || 0,
+            variants: data.variants || [],
+            createdAt: data.created_at
         };
-        products = [newProduct, ...products];
-        storage.saveProducts(products);
-        return newProduct;
     },
 
-    update: (id, updatedFields) => {
-        products = products.map(p =>
-            p.id === id ? { ...p, ...updatedFields } : p
-        );
-        storage.saveProducts(products);
-        return products.find(p => p.id === id);
+    create: async (productData) => {
+        const dbPayload = {
+            name: productData.name,
+            description: productData.description,
+            image_url: productData.imageUrl, // Main/First image
+            images: productData.images || [], // Array of strings
+            status: productData.status,
+            price: productData.price,
+            quantity: productData.quantity,
+            variants: productData.variants,
+            created_at: new Date().toISOString()
+        };
+
+        const { data, error } = await supabase
+            .from('products')
+            .insert([dbPayload])
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        return {
+            ...data,
+            imageUrl: data.image_url,
+            images: data.images || [],
+            createdAt: data.created_at
+        };
     },
 
-    delete: (id) => {
-        products = products.filter(p => p.id !== id);
-        storage.saveProducts(products);
+    update: async (id, updatedFields) => {
+        const dbPayload = {};
+        if (updatedFields.name !== undefined) dbPayload.name = updatedFields.name;
+        if (updatedFields.description !== undefined) dbPayload.description = updatedFields.description;
+        if (updatedFields.imageUrl !== undefined) dbPayload.image_url = updatedFields.imageUrl;
+        if (updatedFields.images !== undefined) dbPayload.images = updatedFields.images;
+        if (updatedFields.status !== undefined) dbPayload.status = updatedFields.status;
+        if (updatedFields.price !== undefined) dbPayload.price = updatedFields.price;
+        if (updatedFields.quantity !== undefined) dbPayload.quantity = updatedFields.quantity;
+        if (updatedFields.variants !== undefined) dbPayload.variants = updatedFields.variants;
+
+        const { data, error } = await supabase
+            .from('products')
+            .update(dbPayload)
+            .eq('id', id)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        return {
+            ...data,
+            imageUrl: data.image_url,
+            images: data.images || [],
+            createdAt: data.created_at
+        };
+    },
+
+    delete: async (id) => {
+        const { error } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
     }
 };

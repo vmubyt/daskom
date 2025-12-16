@@ -17,7 +17,11 @@ const ProductCard = ({ product }) => {
             flexDirection: 'column',
             height: '100%'
         }}>
-            <div style={{ height: '200px', overflow: 'hidden' }}>
+            <div style={{
+                width: '100%',
+                aspectRatio: '1/1',
+                overflow: 'hidden'
+            }}>
                 <img
                     src={product.imageUrl}
                     alt={product.name}

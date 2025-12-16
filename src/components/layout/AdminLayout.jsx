@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from '../admin/Sidebar';
-import { authService } from '../../services/auth';
+import { useAuth } from '../../contexts/AuthContext';
 
 const AdminLayout = () => {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
+    const { user, loading } = useAuth();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
-        const currentUser = authService.getCurrentUser();
-        if (!currentUser) {
+        if (!loading && !user) {
             navigate('/admin/login');
-        } else {
-            setUser(currentUser);
         }
-        setLoading(false);
-    }, [navigate]);
+    }, [user, loading, navigate]);
 
     if (loading) return null;
     if (!user) return null;

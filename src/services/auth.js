@@ -1,44 +1,31 @@
-import { storage } from './storage';
-
-const ADMIN_CREDENTIALS = {
-    email: "admin@server48.id",
-    password: "server48admin"
-};
-
-const ADMIN_USER = {
-    id: "admin-1",
-    name: "SERVER48 Admin",
-    email: "admin@server48.id",
-    avatarUrl: "https://ui-avatars.com/api/?name=Server+Admin&background=random",
-    role: "admin"
-};
+import { supabase } from '../lib/supabaseClient';
 
 export const authService = {
-    login: (email, password) => {
-        return new Promise((resolve, reject) => {
-            // Simulate network delay
-            setTimeout(() => {
-                if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
-                    storage.saveSession(ADMIN_USER);
-                    resolve(ADMIN_USER);
-                } else {
-                    reject(new Error("Invalid credentials"));
-                }
-            }, 500);
+    login: async (email, password) => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password
         });
+
+        if (error) throw error;
+        return data.user;
     },
 
-    logout: () => {
-        storage.clearSession();
-        // Force reload to clear any in-memory state or redirect
+    logout: async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        // Redirect handled by AuthContext state change or UI
         window.location.href = '/admin/login';
     },
 
-    getCurrentUser: () => {
-        return storage.getSession();
+    getCurrentUser: async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        return session?.user ?? null;
     },
 
-    isAuthenticated: () => {
-        return !!storage.getSession();
+    isAuthenticated: async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        return !!session;
     }
 };
+

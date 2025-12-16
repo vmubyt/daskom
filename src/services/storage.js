@@ -1,27 +1,22 @@
-
-const STORAGE_KEY = 'server48_products';
+import { supabase } from '../lib/supabaseClient';
 
 export const storage = {
-    getProducts: () => {
-        const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : null;
-    },
+    uploadImage: async (file, bucket = 'images') => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
 
-    saveProducts: (products) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    },
+        const { data, error } = await supabase.storage
+            .from(bucket)
+            .upload(filePath, file);
 
-    // Auth storage
-    getSession: () => {
-        const data = localStorage.getItem('server48_session');
-        return data ? JSON.parse(data) : null;
-    },
+        if (error) throw error;
 
-    saveSession: (user) => {
-        localStorage.setItem('server48_session', JSON.stringify(user));
-    },
+        // Get Public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from(bucket)
+            .getPublicUrl(filePath);
 
-    clearSession: () => {
-        localStorage.removeItem('server48_session');
+        return publicUrl;
     }
 };

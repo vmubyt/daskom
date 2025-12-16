@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import ProductCard from '../../components/common/ProductCard';
 import { productService } from '../../services/productService';
 import { sliderService } from '../../services/sliderService';
 import { Search } from 'lucide-react';
+import HomeSkeleton from '../../components/skeletons/HomeSkeleton';
 
 const Home = () => {
     // Product State
     const [products, setProducts] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     // Slider State
     const [sliders, setSliders] = useState([]);
@@ -36,18 +39,33 @@ const Home = () => {
 
     // Initial Data Fetch
     useEffect(() => {
-        const prodResults = productService.getAll({
-            searchQuery,
-            status: 'visible',
-            searchFields: ['name']
-        });
-        setProducts(prodResults);
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                // Parallel Fetch
+                const [prodRes, sliderRes] = await Promise.allSettled([
+                    productService.getAll({ searchQuery, status: 'visible', searchFields: ['name'] }),
+                    sliderService.getAll()
+                ]);
 
-        const sliderData = sliderService.getAll();
-        if (sliderData.length > 0) {
-            setSliders(sliderData);
-            setupSlides(sliderData);
-        }
+                if (prodRes.status === 'fulfilled') {
+                    setProducts(prodRes.value || []);
+                }
+
+                if (sliderRes.status === 'fulfilled') {
+                    const sliderData = sliderRes.value;
+                    if (sliderData && sliderData.length > 0) {
+                        setSliders(sliderData);
+                        setupSlides(sliderData);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
     }, [searchQuery]);
 
     // Responsive Check
@@ -246,6 +264,10 @@ const Home = () => {
         }
     };
 
+    if (isLoading) {
+        return <HomeSkeleton />;
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', overflowX: 'hidden' }}>
             <Navbar />
@@ -356,10 +378,14 @@ const Home = () => {
                     </div>
                     <div className="product-grid">
                         {products.length > 0 ? (
-                            products.map(p => <ProductCard key={p.id} product={p} />)
+                            products.map(p => (
+                                <Link to={`/product/${p.id}`} key={p.id} style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
+                                    <ProductCard product={p} />
+                                </Link>
+                            ))
                         ) : (
                             <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', gridColumn: '1/-1' }}>
-                                Searching...
+                                {searchQuery ? 'No products found' : 'No products available'}
                             </div>
                         )}
                     </div>

@@ -476,3 +476,111 @@ select:focus {
     margin-bottom: 8px;
     font-size: 0.9rem;
 }
+
+/* --- Admin Image Uploader --- */
+.admin-image-uploader {
+    /* inline style: no border, no padding, transparent bg */
+    border: none;
+    padding: 0;
+    background-color: transparent;
+}
+
+.uploader-tabs {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.25rem;
+    /* Remove full bottom border for cleaner look, or keep logic: */
+    /* border-bottom: 1px solid var(--border-color); */
+}
+
+.uploader-tab {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    padding-bottom: 0.25rem;
+    font-size: 0.9rem;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.uploader-tab.active {
+    color: var(--accent-color);
+}
+
+/* Subtle indicator instead of full tab style */
+.uploader-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color);
+}
+
+.file-upload-zone {
+    /* Match input field style: subtle border */
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: transparent;
+    /* Seamless with form */
+}
+
+.file-upload-zone:hover {
+    border-color: var(--accent-color);
+    background-color: rgba(187, 134, 252, 0.02);
+}
+
+.file-upload-input {
+    display: none;
+}
+
+.upload-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+}
+
+.image-preview-container {
+    margin-top: 0.5rem;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background-color: #000;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.preview-remove-btn:hover {
+    background-color: var(--danger-color);
+}

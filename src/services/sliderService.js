@@ -1,59 +1,31 @@
-
-const STORAGE_KEY = 'server48_sliders';
-
-// Initial demo data
-const DEMO_SLIDERS = [
-    {
-        id: "s-1",
-        imageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
-        title: "Welcome to SERVER48",
-        order: 0,
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: "s-2",
-        imageUrl: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=1200&q=80",
-        title: "Premium Tech Gear",
-        order: 1,
-        createdAt: new Date().toISOString()
-    }
-];
-
-// Initialize memory
-let sliders = [];
-try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    sliders = stored ? JSON.parse(stored) : DEMO_SLIDERS;
-} catch (e) {
-    sliders = DEMO_SLIDERS;
-}
-
-const save = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sliders));
-};
-
-// Sort by order 0-N
-const sortSliders = () => {
-    sliders.sort((a, b) => a.order - b.order);
-};
-
-// Re-normalize orders 0 to N-1
-const normalizeOrders = () => {
-    sliders.forEach((s, index) => {
-        s.order = index;
-    });
-    save();
-};
+import { supabase } from '../lib/supabaseClient';
 
 export const sliderService = {
-    getAll: () => {
-        sortSliders();
-        return [...sliders];
+    getAll: async () => {
+        const { data, error } = await supabase
+            .from('sliders')
+            .select('*')
+            .order('order', { ascending: true });
+
+        if (error) throw error;
+
+        return data.map(s => ({
+            ...s,
+            imageUrl: s.image_url,
+            createdAt: s.created_at
+        }));
     },
 
-    getAvailableSlots: (currentOrderId = null) => {
-        // Limit is 5 (indexes 0, 1, 2, 3, 4)
-        const allSlots = [0, 1, 2, 3, 4];
+    getAvailableSlots: async (currentOrderId = null) => {
+        // Limit is 10
+        const allSlots = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        const { data: sliders, error } = await supabase
+            .from('sliders')
+            .select('order');
+
+        if (error) throw error;
+
         const usedSlots = sliders.map(s => s.order);
 
         // Available = All - Used (plus include current if editing)
@@ -62,72 +34,124 @@ export const sliderService = {
         );
     },
 
-    create: (data) => {
-        if (sliders.length >= 5) {
-            throw new Error("Maximum 5 sliders allowed");
+    create: async (data) => {
+        // Check Limit
+        const { count, error: countError } = await supabase
+            .from('sliders')
+            .select('*', { count: 'exact', head: true });
+
+        if (countError) throw countError;
+        if (count >= 10) {
+            throw new Error("Maximum 10 sliders allowed");
         }
 
-        // Find first available slot if not provided, or simply use end
-        // But usually we just append to end, then let normalize fix it, 
-        // OR we fill specific logic. Specification says "Automatically pre-select the lowest available order".
-        // Here we just accept what comes or append.
-
+        // Determine Order
         let newOrder = data.order;
         if (newOrder === undefined || newOrder === null) {
-            newOrder = sliders.length; // Append
+            newOrder = count; // Append
         }
 
-        const newSlider = {
-            id: "s-" + Date.now(),
-            imageUrl: data.imageUrl,
+        const dbPayload = {
             title: data.title || "No Title",
+            image_url: data.imageUrl,
             order: parseInt(newOrder),
-            createdAt: new Date().toISOString()
+            created_at: new Date().toISOString()
         };
 
-        sliders.push(newSlider);
-        // Normalize just in case of weirdness, but strictly we should respect the hole filling if designed that way.
-        // BUT Requirement 2.2 says "Recompute orders from top to bottom" implies sequential.
-        // Requirement 2.1 says "Only show UNUSED slots". This implies we CAN have gaps temporarily or we insert into slots?
-        // Actually 2.2 says "Reassign order sequentially: 0 -> N-1". 
-        // This suggests simple sequential ordering is preferred for DnD.
-        // But 2.1 Dropdown implies manual slot selection. 
-        // Only way to reconcile: We allow manual order assignment, but Sort + Normalize might override it if we are not careful.
-        // Let's trust normalize for DnD, but for Create/Edit, we allow setting specific order value.
-        // If I manually set order 2 when 0,1,3 exist, we have 0,1,2,3.
+        const { data: newSlider, error } = await supabase
+            .from('sliders')
+            .insert([dbPayload])
+            .select()
+            .single();
 
-        sortSliders();
-        save();
-        return newSlider;
+        if (error) throw error;
+
+        // Normalize just in case
+        await sliderService.normalizeOrders();
+
+        return {
+            ...newSlider,
+            imageUrl: newSlider.image_url,
+            createdAt: newSlider.created_at
+        };
     },
 
-    update: (id, updatedFields) => {
-        const index = sliders.findIndex(s => s.id === id);
-        if (index === -1) return null;
+    update: async (id, updatedFields) => {
+        const dbPayload = {};
+        if (updatedFields.title !== undefined) dbPayload.title = updatedFields.title;
+        if (updatedFields.imageUrl !== undefined) dbPayload.image_url = updatedFields.imageUrl;
+        if (updatedFields.order !== undefined) dbPayload.order = updatedFields.order;
 
-        sliders[index] = { ...sliders[index], ...updatedFields };
+        const { data, error } = await supabase
+            .from('sliders')
+            .update(dbPayload)
+            .eq('id', id)
+            .select()
+            .single();
 
-        // If order changed, we might have conflicts. 
-        // Ideally we just save. The list might need re-sorting.
-        sortSliders();
-        save();
-        return sliders[index];
+        if (error) throw error;
+
+        // If order changed, we might need to sort/normalize
+        await sliderService.normalizeOrders();
+
+        return {
+            ...data,
+            imageUrl: data.image_url,
+            createdAt: data.created_at
+        };
     },
 
-    delete: (id) => {
-        if (sliders.length <= 1) {
+    delete: async (id) => {
+        // Check minimum 1? Requirement: "minimum of one... active slides".
+        // Frontend handles this mostly, but backend check is good.
+        // However, Supabase permissions usually handle this or we do it here.
+        const { count } = await supabase.from('sliders').select('*', { count: 'exact', head: true });
+        if (count <= 1) {
             throw new Error("Minimum 1 slider required");
         }
-        sliders = sliders.filter(s => s.id !== id);
-        normalizeOrders(); // 2.3 Delete Rules: Re-normalize orders
+
+        const { error } = await supabase
+            .from('sliders')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        await sliderService.normalizeOrders();
     },
 
-    reorder: (reorderedSliders) => {
-        // 2.2 Drag & Drop Reordering: Reassign sequential 0 -> N-1
-        sliders = reorderedSliders.map((s, index) => ({
-            ...s,
-            order: index
-        }));
-        save();
+    reorder: async (reorderedSliders) => {
+        // reorderedSliders is array of objects { id, order ... } with NEW correct order (index based)
+        // We need to update each slider in DB to match its new index.
+
+        // This is inefficient (N requests), but fine for 5 items.
+        // We can do it concurrently.
+        const updates = reorderedSliders.map((slider, index) => {
+            return supabase
+                .from('sliders')
+                .update({ order: index })
+                .eq('id', slider.id);
+        });
+
+        await Promise.all(updates);
+    },
+
+    normalizeOrders: async () => {
+        // Fetch all, sort by order, then re-write orders 0..N-1
+        const { data: sliders } = await supabase
+            .from('sliders')
+            .select('*')
+            .order('order', { ascending: true });
+
+        if (!sliders) return;
+
+        const updates = sliders.map((slider, index) => {
+            if (slider.order !== index) {
+                return supabase.from('sliders').update({ order: index }).eq('id', slider.id);
+            }
+            return Promise.resolve();
+        });
+
+        await Promise.all(updates);
     }
 };

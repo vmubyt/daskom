@@ -6,12 +6,21 @@ const DashboardHome = () => {
     const [stats, setStats] = useState({ total: 0, visible: 0, private: 0 });
 
     useEffect(() => {
-        const products = productService.getAll();
-        setStats({
-            total: products.length,
-            visible: products.filter(p => p.status === 'visible').length,
-            private: products.filter(p => p.status === 'private').length
-        });
+        const fetchStats = async () => {
+            try {
+                const products = await productService.getAll();
+                if (products) {
+                    setStats({
+                        total: products.length,
+                        visible: products.filter(p => p.status === 'visible').length,
+                        private: products.filter(p => p.status === 'private').length
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            }
+        };
+        fetchStats();
     }, []);
 
     const StatCard = ({ title, count, icon, color }) => (
