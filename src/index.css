@@ -272,6 +272,14 @@ select:focus {
     }
 }
 
+/* --- Global Slider Cursor Fix --- */
+.swiper:active,
+.swiper-wrapper:active,
+.swiper-slide:active {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
+}
+
 /* --- Product Page Header Fixed Layout --- */
 /* --- Product Page Header Fixed Layout --- */
 /* --- Product Page Header Fixed Layout --- */

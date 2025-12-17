@@ -13,11 +13,13 @@ import SliderList from './pages/admin/SliderList';
 // Layouts
 import AdminLayout from './components/layout/AdminLayout';
 import { AuthProvider } from './contexts/AuthContext';
+import ScrollToTop from './components/common/ScrollToTop';
 
 function App() {
     return (
         <AuthProvider>
             <Router>
+                <ScrollToTop />
                 <Routes>
                     {/* Public Routes */}
                     <Route path="/" element={<Home />} />
