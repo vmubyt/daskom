@@ -40,6 +40,7 @@ const ProductDetail = () => {
     const currentTranslateX = useRef(0);
     const draggingRef = useRef(false);
     const lastInteractionTime = useRef(0); // Track user interaction timestamp
+    const transitionTimeout = useRef(null); // Safety timeout for transitions
 
     // --- Thumbnail Logic ---
     const THUMB_WINDOW_SIZE = 5;
@@ -167,18 +168,19 @@ const ProductDetail = () => {
         if (allImages.length <= 1 || isTransitioning) return;
         lastInteractionTime.current = Date.now();
 
-        // If Overlay is Open, we want instant update (no physics delay)
-        // But we still update sliderIndex to keep background sync
         if (isImageOverlayOpen) {
             const nextRealIndex = (selectedImageIndex + 1) % allImages.length;
-            setSelectedImageIndex(nextRealIndex); // Instant update for Overlay
-            // Sync background slider (Map Real -> Slider)
-            // Real 0 -> Slider 1
+            setSelectedImageIndex(nextRealIndex);
             setSliderIndex(nextRealIndex + 1);
         } else {
-            // Normal Physics Slide
             setIsTransitioning(true);
             setSliderIndex(prev => prev + 1);
+
+            // Safety Unlock
+            if (transitionTimeout.current) clearTimeout(transitionTimeout.current);
+            transitionTimeout.current = setTimeout(() => {
+                setIsTransitioning(false);
+            }, 600);
         }
     };
 
@@ -193,6 +195,12 @@ const ProductDetail = () => {
         } else {
             setIsTransitioning(true);
             setSliderIndex(prev => prev - 1);
+
+            // Safety Unlock
+            if (transitionTimeout.current) clearTimeout(transitionTimeout.current);
+            transitionTimeout.current = setTimeout(() => {
+                setIsTransitioning(false);
+            }, 600);
         }
     };
 
@@ -239,6 +247,7 @@ const ProductDetail = () => {
 
     // 3. Transition End (Teleport)
     const handleTransitionEnd = () => {
+        if (transitionTimeout.current) clearTimeout(transitionTimeout.current);
         setIsTransitioning(false);
         if (allImages.length <= 1) return;
 
@@ -371,6 +380,22 @@ const ProductDetail = () => {
 
 
 
+
+    // Helper: Check if a specific option is available given CURRENT other selections
+    const checkVariantAvailability = (catName, optionValue) => {
+        if (!product?.variants?.useCustomPrice) return true; // Simple product always available
+
+        const nextSelections = { ...selectedSelections, [catName]: optionValue };
+        const categories = product.variants.categories || [];
+        const combinations = product.variants.combinations || [];
+
+        // Construct key
+        const comboName = categories.map(cat => nextSelections[cat.name]).join(' / ');
+        const matched = combinations.find(c => c.name === comboName);
+
+        // If no combo found, or stock is 0
+        return matched ? (matched.stock ?? matched.quantity ?? 0) > 0 : false;
+    };
 
     // --- Renders ---
     if (loading) return <ProductDetailSkeleton />;
@@ -551,15 +576,30 @@ const ProductDetail = () => {
                                         <div key={idx} className="variant-group">
                                             <label>{cat.name}</label>
                                             <div className="variants-list">
-                                                {cat.options.map((opt, oIdx) => (
-                                                    <button
-                                                        key={oIdx}
-                                                        onClick={() => handleVariantSelect(cat.name, opt)}
-                                                        className={`variant-btn ${selectedSelections[cat.name] === opt ? 'active' : ''}`}
-                                                    >
-                                                        {opt}
-                                                    </button>
-                                                ))}
+                                                {cat.options.map((opt, oIdx) => {
+                                                    const isAvailable = checkVariantAvailability(cat.name, opt);
+                                                    const isActive = selectedSelections[cat.name] === opt;
+
+                                                    return (
+                                                        <button
+                                                            key={oIdx}
+                                                            onClick={() => isAvailable && handleVariantSelect(cat.name, opt)}
+                                                            className={`variant-btn ${isActive ? 'active' : ''} ${!isAvailable ? 'out-of-stock' : ''}`}
+                                                            disabled={!isAvailable}
+                                                            style={!isAvailable ? {
+                                                                opacity: 0.5,
+                                                                cursor: 'not-allowed',
+                                                                textDecoration: 'line-through',
+                                                                backgroundColor: '#333',
+                                                                color: '#888',
+                                                                borderColor: '#444'
+                                                            } : {}}
+                                                            title={!isAvailable ? 'Out of Stock' : ''}
+                                                        >
+                                                            {opt}
+                                                        </button>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     ))}
@@ -851,10 +891,13 @@ const ProductDetail = () => {
                 /* Carousel Arrows */
                 .carousel-btn {
                     position: absolute; top: 50%; transform: translateY(-50%);
-                    background: rgba(0,0,0,0.5); color: #fff;
-                    border: none; border-radius: 50%; width: 36px; height: 36px;
+                    background: rgba(0,0,0,0.6); color: #fff;
+                    border: none; border-radius: 50%; width: 40px; height: 40px;
                     display: flex; align-items: center; justify-content: center;
-                    cursor: pointer; transition: all 0.2s; opacity: 0; z-index: 5;
+                    cursor: pointer; transition: all 0.2s; 
+                    opacity: 1; /* Always visible */
+                    z-index: 50; /* High Priority */
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                 }
                 .carousel-btn:hover { background: rgba(187, 134, 252, 0.8); }
                 .main-image-wrapper:hover .carousel-btn { opacity: 1; }
