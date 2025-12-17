@@ -27,7 +27,7 @@ function handleWhatsappOrder(e) {
         `Mohon info ketersediaan stok dan total harga.`;
 
     // WhatsApp API
-    const waNumber = "6281225220072";
+    const waNumber = "6282280471358";
 
     // Open WhatsApp
     const url = `https://wa.me/${waNumber}?text=${text}`;
