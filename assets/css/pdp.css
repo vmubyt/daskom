@@ -1,0 +1,219 @@
+/* Product Detail Page (PDP) Styles */
+
+/* Gallery */
+
+.gallery-main {
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+    background: #060606;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    position: relative;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-thumbs {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.thumb-item {
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    object-fit: cover;
+}
+
+.thumb-item.active,
+.thumb-item:hover {
+    opacity: 1;
+    border-color: var(--text-accent);
+    transform: translateY(-2px);
+}
+
+/* Info Section */
+
+.product-info {
+    padding-left: 1rem;
+}
+
+
+.product-info h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.pdp-price {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    padding-bottom: 0;
+}
+
+/* Specs */
+
+.product-specs {
+    margin: 2.5rem 0;
+
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2.5rem;
+    padding-top: 0;
+}
+
+.spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+}
+
+.spec-label {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.spec-value {
+    color: var(--text-accent);
+    font-weight: 500;
+    border: 1px solid var(--text-accent);
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    min-width: 104px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Form Override */
+
+.whatsapp-form h3 {
+    margin-bottom: 1rem;
+}
+
+
+.variant-options {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.v-btn {
+    padding: 0.8rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.v-btn.active,
+.v-btn:hover {
+    background: var(--text-accent);
+    color: var(--bg-primary);
+    border-color: var(--text-accent);
+}
+
+/* Layout & Spacing */
+
+.main-padding {
+    padding-bottom: 6rem;
+}
+
+
+.breadcrumb {
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+}
+
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 6rem;
+    margin-top: 2rem;
+    align-items: start;
+}
+
+
+.desc-title {
+    margin-bottom: 0.75rem;
+    color: var(--text-accent);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.desc-text {
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.whatsapp-form {
+    background-color: var(--bg-card);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.whatsapp-form h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+}
+
+/* Form Groups */
+
+.form-qty-group {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.form-qty-label {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.qty-display {
+    font-size: 1.25rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.btn-icon {
+    display: inline;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    width: 20px;
+    height: 20px;
+}

@@ -1,0 +1,99 @@
+/* About Page Styles */
+
+/* Team Card */
+
+.team-card-layout {
+
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    scroll-margin-top: 100px;
+    border: 1px solid transparent;
+}
+
+.team-card-layout.right {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.team-photo {
+    flex: 0 0 150px;
+}
+
+.team-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid var(--text-accent);
+    object-fit: cover;
+}
+
+.team-info {
+    flex: 1;
+}
+
+.team-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+}
+
+.team-role {
+    color: var(--text-accent);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.team-bio {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Layout & Spacing */
+
+.main-padding {
+
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+}
+
+.about-hero {
+    margin-bottom: 5rem;
+}
+
+.hero-container {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.hero-desc {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    line-height: 1.8;
+}
+
+.team-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}

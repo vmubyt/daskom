@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monotech - About Us</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/about.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/components.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar Component -->
+    <app-navbar></app-navbar>
+
+    <main class="main-padding">
+        <!-- About Hero -->
+        <div class="about-hero">
+            <div class="container hero-container">
+                <h1 class="hero-title">About MONOTECH</h1>
+                <p class="hero-desc">
+                    MONOTECH is a premium destination for high-quality tech gear. We believe in simplicity, performance,
+                    and aesthetic.
+                    Our mission is to curate the best products for professionals and enthusiasts alike.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Team Section -->
+            <div class="team-grid">
+
+                <!-- Person 1: Alvitto -->
+                <div id="alvitto" class="card team-card-layout">
+                    <div class="team-photo">
+                        <img src="https://i.ibb.co.com/93mDKMRj/IMG-20250308-223216-321.jpg" alt="Alvitto">
+                    </div>
+                    <div class="team-info">
+                        <h2 class="team-name">ALVITTO ISTAKHARI MUBAROK</h2>
+                        <h4 class="team-role">Lead Developer</h4>
+                        <p class="team-bio">Full-stack wizard with a passion for clean code and scalable architectures.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Person 2: Lukita (Right Aligned) -->
+                <div id="lukita" class="card team-card-layout right">
+                    <div class="team-photo">
+                        <img src="https://i.ibb.co.com/Mxc4THbV/Whats-App-Image-2025-12-17-at-22-46-36.jpg"
+                            alt="Lukita">
+                    </div>
+                    <div class="team-info">
+                        <h2 class="team-name">LUKITA PRATAMA PUTRA</h2>
+                        <h4 class="team-role">UI/UX Designer</h4>
+                        <p class="team-bio">Lukita brings the interface to life with his keen eye for detail and
+                            user-centric design approach.</p>
+                    </div>
+                </div>
+
+                <!-- Person 3: Akhmad -->
+                <div id="akhmad" class="card team-card-layout">
+                    <div class="team-photo">
+                        <img src="https://i.ibb.co.com/LhNbXKy1/blank-profile-picture-973460-1280.png" alt="Akhmad">
+                    </div>
+                    <div class="team-info">
+                        <h2 class="team-name">AKHMAD WAHYUDI YANUAR WIBOWO</h2>
+                        <h4 class="team-role">Product Manager</h4>
+                        <p class="team-bio">Bridging the gap between technical possibilities and user needs.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

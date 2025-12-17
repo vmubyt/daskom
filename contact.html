@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monotech - Contact Us</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/components.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar Component -->
+    <app-navbar></app-navbar>
+
+    <main class="main-padding">
+        <!-- Contact Hero -->
+        <div class="contact-hero">
+            <div class="container hero-container">
+                <h1 class="hero-title">Hubungi Kami</h1>
+                <p class="hero-desc">
+                    Punya pertanyaan tentang spesifikasi server atau kebutuhan data center? Tim kami siap membantu anda.
+                </p>
+            </div>
+        </div>
+
+        <div class="container contact-grid">
+            <!-- Left: Info -->
+            <div>
+                <h2 class="contact-section-title">Informasi Kontak</h2>
+                <div class="contact-info-list">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Alamat</h4>
+                            <p>Jl. Jalan Imam Bonjol No. 207, Semarang 50131</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="mail"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>support@monotech.id</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Telepon</h4>
+                            <p>+62 812 3456 7890</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="card contact-card">
+                <h2 class="contact-section-title">Kirim Pesan</h2>
+                <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <label>Nama Anda</label>
+                        <input type="text" class="form-input" placeholder="Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-input" placeholder="email@contoh.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pesan</label>
+                        <textarea class="form-textarea" rows="4" placeholder="Tulis pesan anda disini..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

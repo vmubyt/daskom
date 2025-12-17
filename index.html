@@ -1,13 +1,160 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SERVER48</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MONOTECH - Premium Catalog">
+    <title>Monotech - Catalog</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+
+    <!-- Design System: Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Icons: Lucide (via unpkg for pure static) or Phosphor -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Style -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/components.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar Component -->
+    <app-navbar></app-navbar>
+
+    <!-- Main Content -->
+    <main style="padding-bottom: 4rem;">
+        <div class="container content-top-spacing">
+
+            <!-- Home Banner -->
+            <div class="home-banner">
+                <img src="assets/images/home-banner.png" alt="Monotech Banner">
+            </div>
+
+            <!-- Category: Smartphone -->
+            <div class="category-section section-gap">
+                <h2 class="section-title text-left">
+                    Smartphone</h2>
+
+                <div class="grid-cols">
+
+                    <!-- Phone 1: iPhone 17 Pro -->
+                    <a href="products/smartphone/iphone-17-pro.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-17-pro-silver-1000_1_2.webp&w=3840&q=45"
+                                alt="iPhone 17 Pro">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">iPhone 17 Pro</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                Ultimate Performance</p>
+                            <p class="card-price">Rp 26.999.000</p>
+                        </div>
+                    </a>
+
+                    <!-- Phone 2: iPhone 17 Air -->
+                    <a href="products/smartphone/iphone-17-air.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-air-light-gold-1000_1_2.webp&w=3840&q=45"
+                                alt="iPhone 17 Air">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">iPhone 17 Air</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                Ultra Thin, Premium</p>
+                            <p class="card-price">Rp 21.249.000</p>
+                        </div>
+                    </a>
+
+                    <!-- Phone 3: iPhone 16 -->
+                    <a href="products/smartphone/iphone-16.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone_16_ultramarine_01_3.jpg&w=3840&q=45"
+                                alt="iPhone 16">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">iPhone 16</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                The New Standard, A18</p>
+                            <p class="card-price">Rp 14.999.000</p>
+                        </div>
+                    </a>
+
+                    <!-- Phone 4: iPhone 13 -->
+                    <a href="products/smartphone/iphone-13.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone_13_midnight_1.jpg&w=3840&q=45"
+                                alt="iPhone 13">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">iPhone 13</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                Reliable Classic, A15</p>
+                            <p class="card-price">Rp 8.249.000</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Category: Watch -->
+            <div class="category-section">
+                <h2 class="section-title text-left">
+                    Watch</h2>
+
+                <div class="grid-cols">
+
+                    <!-- Watch 1 -->
+                    <a href="products/watch/apple-watch-ultra-2.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fp%2Fapple_watch_ultra_2_gps_49_cellular_black_titanium_case_with_black_titanium_milanese_loop_01_1.jpg&w=3840&q=45"
+                                alt="Watch 1">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">Apple Watch Ultra 2</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                Titanium Case, Alpine Loop</p>
+                            <p class="card-price">Rp 14.999.000</p>
+                        </div>
+                    </a>
+
+                    <!-- Watch 2 -->
+                    <a href="products/watch/apple-watch-series-10.html" class="card">
+                        <div class="card-image">
+                            <img src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fp%2Fapple_watch_series_10_42mm_gps_silver_aluminium_case_with_denim_sport_band_1.jpg&w=3840&q=45"
+                                alt="Watch 2">
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">Apple Watch Series 10</h3>
+                            <p class="card-desc" style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+                                Thinnest Design, Aluminum</p>
+                            <p class="card-price">Rp 6.299.000</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+
+    <!-- Init Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
 </html>

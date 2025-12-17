@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone 16 - Monotech</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../assets/favicon/site.webmanifest">
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Style -->
+    <!-- Style -->
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/pdp.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <script src="../../assets/js/components.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navbar Component -->
+    <app-navbar></app-navbar>
+
+    <main class="container main-padding">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="../../index.html">Home</a> / <span>Smartphone</span> / <span>iPhone 16</span>
+        </div>
+
+        <div class="product-layout">
+
+            <!-- LEFT: Gallery -->
+            <div class="product-gallery">
+                <div class="gallery-main">
+                    <img id="mainImage"
+                        src="https://ibox.co.id/_next/image?url=https%3A%2F%2Fcdnpro.eraspace.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone_16_ultramarine_01_3.jpg&w=3840&q=45"
+                        alt="iPhone 16">
+                </div>
+            </div>
+
+            <!-- RIGHT: Info & Form -->
+            <div class="product-info">
+                <h1>iPhone 16</h1>
+                <p class="pdp-price">Rp 14.999.000</p>
+
+                <h3 class="desc-title">Description</h3>
+                <p class="desc-text">
+                    Built for Apple Intelligence. Camera Control. Action button. A huge leap in battery life.
+                </p>
+
+                <!-- Product Specs -->
+                <div class="product-specs">
+                    <div class="spec-row">
+                        <span class="spec-label">Color</span>
+                        <span class="spec-value">Ultramarine</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Storage</span>
+                        <span class="spec-value">128GB</span>
+                    </div>
+                </div>
+
+                <!-- Whatsapp Order Form -->
+                <div class="whatsapp-form">
+                    <form onsubmit="handleWhatsappOrder(event)">
+                        <div class="form-group form-qty-group">
+                            <label class="form-qty-label">Jumlah</label>
+                            <div class="qty-controls">
+                                <button type="button" class="v-btn" onclick="updateQty(-1)">-</button>
+                                <span id="qtyDisplay" class="qty-display">1</span>
+                                <button type="button" class="v-btn" onclick="updateQty(1)">+</button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i data-lucide="message-circle" class="btn-icon"></i>
+                            Beli Sekarang
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <app-footer></app-footer>
+
+    <script src="../../assets/js/script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

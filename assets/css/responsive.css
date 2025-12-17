@@ -1,0 +1,193 @@
+/* Responsive Styles */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    :root {
+        --container-width: 960px;
+    }
+
+    .main-padding {
+        padding-bottom: 4rem;
+    }
+
+    /* Grid Adjustments */
+    .grid-cols {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* PDP Layout - Stacked on Tablet too */
+    .product-layout {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+
+    .product-info {
+        padding-left: 0;
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    :root {
+        --container-width: 100%;
+        --header-height: auto;
+    }
+
+    body {
+        overflow-x: hidden;
+        /* Prevent horizontal scroll */
+        width: 100%;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+        width: 100%;
+        /* Ensure container stays within viewport */
+        box-sizing: border-box;
+    }
+
+    /* Navbar */
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 0;
+    }
+
+    /* Home Banner */
+    .home-banner {
+        width: 100%;
+        height: auto !important;
+        aspect-ratio: 2 / 1 !important;
+        /* Force 2:1 Ratio */
+        margin-bottom: 2rem;
+        display: block;
+        background-color: var(--bg-card);
+    }
+
+    .home-banner img {
+        width: 100%;
+        height: 100% !important;
+        object-fit: contain;
+        /* Ensure no crop */
+        display: block;
+        border-radius: 8px;
+    }
+
+    /* Homepage Grid */
+    .section-gap {
+        margin-bottom: 3rem;
+        /* Increased to separate sections clearly */
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        /* Tighter to content */
+        border-left-width: 4px;
+        /* Slightly thinner border for mobile */
+        padding-left: 0.75rem;
+    }
+
+    .content-top-spacing {
+        margin-top: 2rem !important;
+    }
+
+    .grid-cols {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columns for products */
+        gap: 1rem;
+    }
+
+    /* Product Card */
+    .card-details {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+    }
+
+    .card-price {
+        font-size: 0.9rem;
+    }
+
+    /* PDP Layout */
+    .product-layout {
+        grid-template-columns: 1fr;
+        /* Stack layout */
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .main-padding {
+        padding-top: 1.5rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    .breadcrumb {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .product-info {
+        padding-left: 0;
+    }
+
+    .product-info h1 {
+        font-size: 2rem;
+    }
+
+    .pdp-price {
+        font-size: 1.5rem;
+    }
+
+    /* About Page */
+    .about-hero {
+        margin-bottom: 3rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .team-card-layout,
+    .team-card-layout.right {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+    .team-card-layout.right {
+        flex-direction: column;
+    }
+
+    /* Contact Page */
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .contact-card {
+        padding: 1.5rem;
+    }
+
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        /* Stack columns */
+        gap: 2rem;
+        text-align: center;
+    }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .grid-cols {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+}
